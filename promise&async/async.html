@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>ansyc</title>
+		<script src="jquery.min.js"></script>
+	</head>
+	<body>
+		<h2>旅游风景</h2>
+		<ul id="land"></ul>
+		<script type="text/javascript">
+			$(function() {
+				var arrJson = ["01.json", "02.json", "03.json"];
+				var num = 0;
+
+				function myPromise(num) {
+
+					var landscape = new Promise(function(resolve, reject) {
+						$.getJSON(arrJson[num], function(data) {
+							resolve(data);
+						})
+					});
+					return landscape;
+				}
+
+				function writelands(data) {
+
+					var data = data.matchedProducts;
+					for (var i = 0; i < data.length; i++) {
+						let $li = $(`<li>序号：${data[i].collection_num}--标题：${data[i].pro_title}</li>`);
+						$('#land').append($li);
+					}
+				}
+				async function myasync() {
+
+					while (num < arrJson.length) {
+						let index = await myPromise(num);
+						writelands(index);
+						num++;
+					}
+				}
+				myasync();
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>getJSON</title>
+		<script src="jquery.min.js"></script>
+	</head>
+	<body>
+		<h2>风景</h2>
+		<br>
+		<ul id="myland"></ul>
+		<script type="text/javascript">
+			$(function(){
+				
+				var arrJson = ["01.json","02.json","03.json"];
+				var num =0;
+				
+				function myPromise(num){
+					
+					var  landscape = new Promise(function(resolve,reject){
+						$.getJSON(arrJson[num],function(data){
+							resolve(data);
+						})
+					});
+					return landscape;
+				}
+				
+				myPromise(num).then(function(data){
+					console.log("is success");
+					console.log(data);
+					var data = data.matchedProducts;
+					for(var i = 0;i<data.length;i++){
+						let $li = $(`<li>序号：${data[i].collection_num}--标题：${data[i].pro_title}</li>`);
+						$('#myland').append($li);
+					}
+					num++;
+					return myPromise(num);
+				}).then(function(data){
+					
+					var data = data.matchedProducts;
+					for(var j = 0;j<data.length;j++){
+						let $li = $(`<li>序号：${data[j].collection_num}--标题：${data[j].pro_title}</li>`);
+						$('#myland').append($li);
+					}
+					num++;
+					return myPromise(num);
+				}).then(function(data){
+					var data = data.matchedProducts;
+					for(var k = 0;k<data.length;k++){
+						let $li = $(`<li>序号：${data[k].collection_num}--标题：${data[k].pro_title}</li>`);
+						$('#myland').append($li);
+					}
+					
+				}).catch(function(e){
+					console.log("捕获异常");
+				}).finally(function(){
+					console.log("结束");
+				})
+			})
+		</script>
+	</body>
+</html>
