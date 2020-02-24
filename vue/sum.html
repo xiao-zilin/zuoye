@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>求和求平均</title>
+		<script src="vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<ul>
+				<li>m: {{num1}},n: {{num2}}</li>
+				<li>总和:{{sum}},平均值{{avg}}</li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			
+			//计算属性作业，有两个数 num1 和num2  ,使用计算属性求平均值和总和
+			var app = new Vue({
+				
+				el:"#app",
+				
+				data:{
+					
+					num1:myrandom(),
+					num2:myrandom()
+				},
+				computed:{
+					sum:function(){
+						return this.num1 + this.num2;
+					},
+					avg:function(){
+						let result = this.num1 + this.num2;
+						return result/2;
+					}
+				}
+			})
+			function myrandom(){
+				return Math.round(Math.random()*10);
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>button</title>
+		<style type="text/css">
+			.center{
+				width: 200px;
+				height: 100px;
+				margin: 0 auto;
+				border: 1px solid #0086B3;
+				text-align: center;
+				
+			}
+			.green{
+				background-color: #00FF00;
+			}
+		</style>
+		<script src="vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="center">
+			倒计时结束可以点击<br>
+			<button id="mybutton" :disabled="dis" :class="mycolor" @click="change()">{{message}}</button>
+		</div>
+		<script type="text/javascript">
+			//作业：页面一进入，按钮为灰色不可点击状态；按钮上显示倒计时，10-1，到0
+			//时按钮显示“提交”，并且更改它的状态为可点击状态
+			
+			var btn = new Vue({
+				
+				el:"#mybutton",
+				data:{
+					message:5,
+					dis:true,
+					settime:null,
+					mycolor:"",
+					change:function(){
+						this.mycolor = "green";
+					}
+				},
+				mounted:function(){
+					
+					let that = this;
+					this.settime = setInterval(function(){
+						
+						if(that.message==0){
+							that.message = "提交";
+							that.dis = false;
+							clearInterval(that.settime);
+							that.settime = null;
+						}else{
+							that.message--;
+						}
+					},1000)
+				}
+			})
+			
+		</script>
+	</body>
+</html>

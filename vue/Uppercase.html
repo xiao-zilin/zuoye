@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>uppercase</title>
+		<script src="vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<p>{{str}}</p>
+			<button type="button" @click="uppercase()">大写</button>
+		</div>
+		<script type="text/javascript">
+			// 点击某个按钮，实现字符串变大写的功能
+			window.onload = function(){
+				
+				var app = new Vue({
+					el:"#app",
+					data:{
+						str:"hello world!",
+						uppercase:function(){
+							this.str = this.str.toUpperCase();
+						}
+					}
+					
+				})
+			}
+		</script>
+	</body>
+</html>
