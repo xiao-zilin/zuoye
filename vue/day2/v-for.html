@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>for</title>
+		<script src="vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<!-- 作业：学生信息表：使用 table
+			学号 ，姓名，性别，籍贯，联系方式
+			5条数据 -->
+		<table id="tab" border="1" cellspacing="" cellpadding="">
+			<tr>
+				<th colspan="5">student_message</th>
+			</tr>
+			<tr>
+				<td>id</td>
+				<td>name</td>
+				<td>sex</td>
+				<td>address</td>
+				<td>mobile</td>
+			</tr>
+			<tr v-for="value in values">
+				<td>{{value.id}}</td>
+				<td>{{value.name}}</td>
+				<td>{{value.sex}}</td>
+				<td>{{value.address}}</td>
+				<td>{{value.mobile}}</td>
+			</tr>
+		</table>
+		<script type="text/javascript">
+			window.onload = function() {
+
+				var table = new Vue({
+
+					el: "#tab",
+					data: {
+						values: [{
+								id: 2020,
+								name: "joker",
+								sex: "man",
+								address: "china",
+								mobile: "0755-2020225"
+							},
+							{
+								id: 2020,
+								name: "joker",
+								sex: "man",
+								address: "china",
+								mobile: "0755-2020225"
+							},
+							{
+								id: 2020,
+								name: "joker",
+								sex: "man",
+								address: "china",
+								mobile: "0755-2020225"
+							},
+							{
+								id: 2020,
+								name: "joker",
+								sex: "man",
+								address: "china",
+								mobile: "0755-2020225"
+							},
+							{
+								id: 2020,
+								name: "joker",
+								sex: "man",
+								address: "china",
+								mobile: "0755-2020225"
+							}
+
+						]
+
+					}
+				})
+			}
+		</script>
+	</body>
+</html>
