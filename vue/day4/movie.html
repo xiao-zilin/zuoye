@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>movie</title>
+		<style>
+			*{padding:0;margin:0;font-size: 14px;}
+			ul,li{list-style:none;}
+			.list{display: flex; flex-wrap: nowrap; flex-direction: row;}
+			.list li div{width: 100px; height:200px; margin:5px; }
+			.list li div img{width:100px; height:142px;}
+			.text{white-space: nowrap;text-overflow: ellipsis;overflow: hidden;}
+		</style>
+		<meta name="viewport" content="width=device-width" />
+		<script src="../day2/axios.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../day2/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="box" id="app">
+			<movie :movietitle="name1" :mymovie="guochanlist"></movie>
+			<movie :movietitle="name1" :mymovie="zongyilist"></movie>
+			<movie :movietitle="name1" :mymovie="yingmeilist"></movie>
+		</div>
+		<script type="text/javascript">
+			window.onload = function() {
+
+				var movie = {
+
+					props: ["movietitle", "mymovie"],
+					template:`<div>
+								<h2>{{movietitle}}</h2>
+								<ul class="list">
+									<li v-for="item in mymovie">
+										<div>
+											<img :src="item.cover.url" title="item.title" />
+											<p class="text">{{item.title}} </p>
+											<div v-if="item.rating">{{item.rating.value}}</div>
+											<div v-else>暂无评分</div>
+										</div>
+									</li>
+								</ul>
+							 </div>`
+				};
+
+				var app = new Vue({
+
+					el: "#app",
+					data: {
+						name1: "近期值得看的国产剧",
+						name2: "近期值得看的综艺",
+						name3: "近期值得看的英美剧",
+						guochanlist: [],
+						zongyilist: [],
+						yingmeilist: []
+
+					},
+					components: {
+						movie
+					},
+					mounted: function() {
+						//国产
+						function getmovie1() {
+							return axios.get("../day2/dianshiju.json");
+						}
+						//综艺
+						function getmovie2() {
+							return axios.get('../day2/zongyi.json');
+						}
+						//美剧
+						function getmovie3() {
+							return axios.get('../day2/yingmei.json')
+						}
+						axios.all([getmovie1(), getmovie2(), getmovie3()])
+							.then(axios.spread((one, two, three) => {
+								// 请求现在都执行完成
+								console.log(one, two, three)
+								this.guochanlist = one.data.subject_collection_items;
+								this.zongyilist = two.data.subject_collection_items;
+								this.yingmeilist = three.data.subject_collection_items;
+
+							}));
+					}
+				})
+			}
+		</script>
+	</body>
+</html>
