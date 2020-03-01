@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>movie</title>
+		<script src="../day2/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../day2/axios.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+
+			ul,
+			li {
+				list-style: none;
+			}
+
+			.list {
+				display: flex;
+				flex-wrap: nowrap;
+				flex-direction: row;
+				overflow-x: scroll;
+			}
+
+			.list li div {
+				width: 90px;
+				height: 150px;
+				margin: 5px;
+				/* background: lightblue; */
+			}
+
+			.list li div img {
+				width: 90px;
+				height: 100px;
+			}
+			.list li div p{
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<allmovie :mymovie="guochanlist">
+				<h2>近期值得看的国产剧</h2>
+			</allmovie>
+			<allmovie :mymovie="zongyilist">
+				<h2>近期值得看的综艺</h2>
+			</allmovie>
+			<allmovie :mymovie="yingmeilist">
+				<h2>近期值得看的英美剧</h2>
+			</allmovie>
+		</div>
+
+		<script type="text/javascript">
+			window.onload = function() {
+
+				var allmovie = {
+					props: ["mymovie"],
+					template: `<div>
+					<slot></slot>
+					<ul class="list">
+						<li v-for="item in mymovie">
+							<div>
+								<img :src="item.cover.url" title="item.title" />
+								<p class="text">{{item.title}} </p>
+								<span v-if="item.rating">{{item.rating.value}}</span>
+								<span v-else>暂无评分</span>
+							</div>
+						</li>
+					</ul>
+				</div>`
+				}
+
+				/********************************************************************/
+				var movieapp = new Vue({
+
+					el: "#app",
+					data: {
+						guochanlist: [],
+						zongyilist: [],
+						yingmeilist: []
+					},
+					components: {
+						allmovie
+					},
+					mounted: function() {
+						//国产
+						function getmovie1() {
+							return axios.get("../day2/dianshiju.json");
+						}
+						//综艺
+						function getmovie2() {
+							return axios.get('../day2/zongyi.json');
+						}
+						//美剧
+						function getmovie3() {
+							return axios.get('../day2/yingmei.json')
+						}
+						axios.all([getmovie1(), getmovie2(), getmovie3()])
+							.then(axios.spread((one, two, three) => {
+								// 请求现在都执行完成
+								console.log(one, two, three)
+								this.guochanlist = one.data.subject_collection_items;
+								this.zongyilist = two.data.subject_collection_items;
+								this.yingmeilist = three.data.subject_collection_items;
+
+							}));
+					}
+				})
+			}
+		</script>
+	</body>
+</html>

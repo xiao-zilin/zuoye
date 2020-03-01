@@ -1,0 +1,30 @@
+*{
+	margin: 0;
+	padding: 0;
+	font-size: 0.875rem;
+}
+ul,li{
+	list-style: none;
+}
+.swiper-wrapper{
+	display: flex;
+}
+.swiper-active-switch {
+  background: #fff;
+}
+.swiper-container{
+	height: 402px;
+}
+.landscape .img_left img{
+	width:146px;
+	height: 78px;
+}
+.margin_left{
+	margin-left: 20px;
+}
+.margin_right{
+	margin-right: 20px;
+}
+.flex-left{
+	display: flex;
+}
