@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title></title>
+		<style type="text/css">
+			@import url("//unpkg.com/element-ui@2.13.0/lib/theme-chalk/index.css");
+
+			.myDialog {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.5);
+			}
+
+			#dialogMain {
+				margin: 0 auto;
+				height: 40%;
+				background: #fff;
+				min-height: 300px;
+				margin-top: 100px;
+				padding: 16px;
+				display: flex;
+				flex-direction: column;
+			}
+
+			#dialogHeader {
+				display: flex;
+				flex-direction: row;
+				flex-wrap: nowrap;
+				justify-content: space-between;
+				height: 50px;
+				font-size: 20px;
+				font-weight: bold;
+			}
+
+			#dialogContent {
+				background: lightgoldenrodyellow;
+				flex: 1;
+				margin-bottom: 10px;
+			}
+
+			#dialogFooter {
+				height: 50px;
+				line-height: 50px;
+			}
+
+			#dialogFooter span {
+				display: flex;
+				justify-content: space-around;
+				height: 50px;
+				line-height: 50px;
+			}
+
+			.btn {
+				width: 80px;
+				height: 40px;
+				border: 0;
+				border-radius: 5px;
+				color: #fff;
+			}
+
+			.primary {
+				background: skyblue;
+			}
+
+			.danger {
+				background: orangered;
+			}
+			.bad{
+				font-size: 1.875rem;
+			}
+		</style>
+		<script src="//unpkg.com/vue/dist/vue.js"></script>
+		<script src="//unpkg.com/element-ui@2.13.0/lib/index.js"></script>
+	</head>
+	<body>
+		<h2>...令我难忘的作业...</h2>
+		<div id="app">
+			<base-dialog width="30%" title="我的感想" :visible.sync="dialogVisible">
+				<span class="bad">非常难忘的夜晚,还在写作业</span>
+				<span slot="footer">
+					<button class="btn danger" @click="close">取消</button>
+					<button class="btn primary" @click="open">确定</button>
+				</span>
+			</base-dialog>
+			<button @click="showM">显示难忘的模态框</button>
+
+		</div>
+		<script type="text/template" id="myDialog">
+			<div class="myDialog" v-if="visible">
+				<div id="dialogMain" :style="{'width':width}" >
+					<div id="dialogHeader">
+						<span>{{title}}</span>
+						<span @click="hiddenM">×</span>
+					</div>
+					<div id="dialogContent">
+						<slot></slot>
+					</div>
+					<div id="dialogFooter">
+						<slot name="footer"></slot>
+					</div>
+				</div>
+			</div>
+		</script>
+		<script type="text/javascript">
+			Vue.component('base-dialog', {
+				props: ['width', 'title', 'visible'],
+				template: '#myDialog',
+				methods: {
+					hiddenM: function() {
+						//将子组件的模态框的状态值传递给 父组件
+						this.$emit('update:visible');
+					}
+				}
+			});
+			/***************************************************/
+			var vm = new Vue({
+				el: "#app",
+				data: {
+					dialogVisible: false
+				},
+				methods: {
+					showM: function() {
+						this.dialogVisible = true;
+					},
+					open: function() {
+						this.$confirm('是否关闭?', '提示', {
+							confirmButtonText: '确定',
+							cancelButtonText: '取消',
+							type: 'warning',
+						}).then(() => {
+							this.$message({
+								type: 'success',
+								message: '已关闭!'
+							});
+							this.dialogVisible = false;
+						}).catch(() => {
+							this.$message({
+								type: 'info',
+								message: '已取消'
+							});
+						});
+					},
+					close:function(){
+						this.$message({
+							type: 'success',
+							message: '已关闭'
+						});
+						this.dialogVisible = false;
+					}
+				}
+
+			})
+			
+				
+		</script>
+	</body>
+</html>
