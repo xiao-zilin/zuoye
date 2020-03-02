@@ -62,7 +62,7 @@
 						<td>{{item.name}}</td>
 						<td>{{item.price}}</td>
 						<td><span @click="decrement(item)">-</span>{{item.num}}<span @click="increment(item)">+</span></td>
-						<td><button @click="open(item)">删除商品</button></td>
+						<td><button @click="delshop(item)">删除商品</button></td>
 					</tr>
 					<tr>
 						<td>总价：</td>
@@ -88,7 +88,38 @@
 			4.购物车中的商品删除
 			5.计算总价 计算属性来实现*/
 			window.onload = function() {
-
+				var del = {
+					methods:{
+						//是否确定删除商品
+						delshop: function(item) {
+							this.$confirm('是否删除该商品?', '提示', {
+								confirmButtonText: '确定',
+								cancelButtonText: '取消',
+								type: 'warning',
+							}).then(() => {
+								this.$message({
+									type: 'success',
+									message: '商品已删除,终于写完了,睡觉!'
+								});
+								//删除商品
+								//遍历购物车
+								for (var i = 0; i < this.cartList.length; i++) {
+									//找到该商品
+									if (item.name == this.cartList[i].name) {
+										//将该商品从 数组中剔除掉
+										this.cartList.splice(i, 1);
+										break;
+									}
+								}
+							}).catch(() => {
+								this.$message({
+									type: 'info',
+									message: '已取消'
+								});
+							});
+						}
+					}
+				}
 				var vm = new Vue({
 					el: "#app",
 					data: {
@@ -168,36 +199,9 @@
 								console.log("购物车为空");
 								this.cartList.push(good);
 							}
-						},
-						//是否确定删除商品
-						open: function(item) {
-							this.$confirm('是否删除该商品?', '提示', {
-								confirmButtonText: '确定',
-								cancelButtonText: '取消',
-								type: 'warning',
-							}).then(() => {
-								this.$message({
-									type: 'success',
-									message: '商品已删除,终于写完了,睡觉!'
-								});
-								//删除商品
-								//遍历购物车
-								for (var i = 0; i < this.cartList.length; i++) {
-									//找到该商品
-									if (item.name == this.cartList[i].name) {
-										//将该商品从 数组中剔除掉
-										this.cartList.splice(i, 1);
-										break;
-									}
-								}
-							}).catch(() => {
-								this.$message({
-									type: 'info',
-									message: '已取消'
-								});
-							});
-						},
-					}
+						}
+					},
+					mixins:[del]
 				})
 			}
 		</script>
