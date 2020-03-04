@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>filter</title>
+		<style type="text/css">
+			.timestamp {
+				width: 800px;
+				height: 300px;
+				margin: 50px auto;
+			}
+		</style>
+		<script src="../day2/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<div class="timestamp">
+				<ul>
+					<li v-for="(value,index) in timearr">{{value}}--->{{value | timeis("年")}}</li>
+				</ul>
+				数字:<input type="text" placeholder="请输入带小数点的数字" v-model="num"/>
+				位数:<input type="text" v-model="num1" placeholder="请输入想保留的位数"/>
+				{{num}}----->{{num | point(num1)}}
+			</div>
+		</div>
+		<script type="text/javascript">
+			var myfilter = new Vue({
+				el: "#app",
+				data: {
+					message: "hello",
+					timearr: ['1579657789851', '1563516693000', '1578539380000'],
+					num: 3.1415926,
+					num1:3
+				},
+				filters: {
+					//时间戳转日期
+					timeis: function(value, year) {
+
+						let y = parseInt(value / 1000 / 60 / 60 / 24 / 365);
+						let remainder = value - y * 365 * 24 * 60 * 60 * 1000;
+						let m = parseInt(remainder / 1000 / 60 / 60 / 24);
+						return 1970 + y + year;
+					},
+					//保留小数点
+					point: function(n, m) {
+
+						let y = (n + "").split(".");
+						let x = y[1].slice(0, m );
+						return y[0].concat(".", x);
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
