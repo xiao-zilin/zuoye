@@ -21,19 +21,19 @@
 			<footer>
 				<ul class="foot">
 					<li>
-						<!-- <router-link to="/home">首页</router-link> -->
+						<router-link to="/home">首页</router-link>
 					</li>
 					<li>
 						<router-link to="/find">发现</router-link>
 					</li>
 					<li>
-						<router-link>定制行</router-link>
+						定制行
 					</li>
 					<li>
-						<router-link>目的地</router-link>
+						目的地
 					</li>
 					<li>
-						<router-link>我</router-link>
+						我
 					</li>
 				</ul>
 			</footer>
@@ -41,11 +41,8 @@
 		<script type="text/javascript">
 			window.onload = function() {
 				/***********************组件路由***************************************************/
-				/*var home = {
-					props:[
-						"arrpng",
-						"arrlands"
-					],
+				var home = {
+					
 					data: function() {
 						return {
 							arrpng: [],
@@ -53,18 +50,17 @@
 						}
 					},
 					template: `
+						<div>
 						<div class="swiper-container">
 							<div class="swiper-wrapper">
 								<div class="swiper-slide" v-for="(value,index) in arrpng">
 									<img :src="value.photoUrl">
 								</div>
-
 							</div>
 						</div>
-						<!-- 如果需要分页器 -->
-						<div class="pagination"></div>
+				
 						<h3>推荐</h3>
-						<!-- 景点 -->
+					
 						<div class="landscape">
 							<div class="flex-left" v-for="(value,index) in arrlands">
 								<div class="img_left">
@@ -79,14 +75,32 @@
 									</li>
 								</ul>
 							</div>
-						</div>`, 
+						</div></div>`,
 					watch: {
 						'$route'(to, from) {
-							console.log
+							console.log(to)
 						}
 					},
-					
-				}*/
+					mounted: function() {
+						// 轮播图
+						axios.get("../../vue/day5/png.js").then((res) => {
+
+							console.log(res)
+							return this.arrpng = res.data.data;
+						}).catch((error) => {
+							console.log(error);
+						})
+						//景点
+						axios.get("../../vue/day5/country.js").then((res) => {
+
+							console.log(res)
+							return this.arrlands = res.data.data;
+						}).catch((error) => {
+							console.log(error);
+						})
+					}
+
+				}
 				var find = {
 					data: function() {
 						return {
@@ -96,10 +110,10 @@
 					template: `<h2 v-if="message">{{message}}</h2>`
 				}
 				/*******************************路由配置***************************************************/
-				var moive_routes = [/*{
+				var routes = [{
 						"path": "/home",
 						"component": home
-					},*/
+					},
 					{
 						"path": "/find",
 						"component": find
@@ -108,7 +122,7 @@
 
 				/**************************路由对象********************************************/
 				var m_router = new VueRouter({
-					routes: moive_routes,
+					routes: routes,
 
 				})
 
@@ -122,24 +136,7 @@
 						arrlands: []
 					},
 					router: m_router,
-					mounted: function() {
-						// 轮播图
-						axios.get("../../vue/day5/png.js").then(data => {
-					
-							console.log(data.data)
-							return this.arrpng = data.data;
-						}).catch((error) => {
-							console.log(error);
-						})
-						//景点
-						axios.get("../../vue/day5/country.js").then(data => {
-					
-							console.log(data.data)
-							return this.arrlands = data.data;
-						}).catch((error) => {
-							console.log(error);
-						})
-					}
+
 				})
 
 

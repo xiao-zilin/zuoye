@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../../vue/day2/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../day1/vue-router.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#app{
+				width: 100vh;
+				height: 100vh;
+			}
+			footer{
+				width: 100%;
+				position: fixed;
+				bottom: 0;
+			}
+			.foot{
+				display: flex;
+				width: 100%;
+				height: 1.25rem;
+				flex-flow: nowrap row;
+				justify-content: space-around;
+			}
+			ul,li{
+				list-style: none;
+			}
+			.foot li{
+				width: 5rem;
+				text-align: center;
+				font-size: 1.125rem;
+			}
+			.movie{
+				display: flex;
+				flex-flow: nowrap row;
+			}
+			.movie li{
+				width: 7.5rem;
+				text-align: center;
+			}
+		</style>
+	</head>
+	
+		<div id="app">
+			<router-view></router-view>
+			<footer>
+				
+				<ul class="foot">
+					<li><router-link to="/home">电影</router-link></li>
+					<li><router-link to="/cinema">影院</router-link></li>
+					<li><router-link to="/user">我的</router-link></li>
+				</ul>
+			</footer>
+		</div>
+		<script type="text/javascript">
+			//路由组件
+			var home = {
+				template:`<div><h2>看电影</h2>
+					<ul class="movie">
+						<li><router-link to="/movielist">正在热映</router-link></li>
+						<li><router-link to="/will">即将上映</router-link></li>
+					</ul>
+					<router-view></router-view>
+				</div>`
+			}
+			var cinema ={
+				template:`<div>hello world</div>`
+			}
+			var user = {
+				template:`<div>user</div>`
+			}
+			var now_movie ={
+				template:`<div>What movie do you want to see?</div>`
+			}
+			var f_movie ={
+				template:`<div>Nothing</div>`
+			}
+			//路由配置
+			var h_routes = [
+				{"path":"/home","component":home,
+					children:[
+						{"path":"/movielist","component":now_movie},
+						{"path":"/will","component":f_movie}
+					]
+				},
+				{"path":"/cinema","component":cinema},
+				{"path":"/user","component":user}
+			]
+			
+			//路由注册
+			var myrouter = new VueRouter({
+				routes:h_routes
+			})
+			var app = new Vue({
+				el:"#app",
+				data:{
+					
+				},
+				router:myrouter
+			})
+		</script>
+	</body>
+</html>
