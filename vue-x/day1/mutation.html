@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>mutation</title>
+		<script src="../../vue/day2/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="vuex.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+				<button type="button" @click="addstore">add</button>
+				<p>money:{{money}}</p>
+		</div>
+		<script type="text/javascript">
+			
+			var appmapstate = Vuex.mapState;
+			
+			var store = new Vuex.Store({
+				
+				state:{
+					money:1
+				},
+				mutations:{
+						
+					add:function(state,obj){
+						state.money+=obj.num;
+					}
+				}
+			}) 
+			
+			/***********************************************************/
+			var app = new Vue({
+				el:'#app',
+				computed:{
+					...appmapstate({
+						money:state=>state.money
+					})
+				},
+				methods:{
+					addstore:function(){
+						this.$store.commit({type:"add",num:10})
+					}
+				},
+				store
+			})
+		</script>
+	</body>
+</html>

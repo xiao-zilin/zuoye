@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="../../vue/day1/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../day1/vuex.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<button type="button"></button>
+			<ul>
+				<li v-for="(i,idenx) in sortage" :key="idenx">name: {{i.name}}---age: {{i.age}}</li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			
+			var mapgetter = Vuex.mapGetters;
+			var mapstate = Vuex.mapState;
+			
+			var store = new Vuex.Store({
+				state:{
+					animal:[
+						{"id":228,"name":"mimi","species":"cat","age":20},
+						{"id":229,"name":"luolo","species":"snake","age":18},
+						{"id":230,"name":"lili","species":"fox","age":23},
+						{"id":231,"name":"boer","sepcies":"elephant","age":19}
+					]
+				},
+				getters:{
+					sortage:state=>{
+						return state.animal.sort((a,b)=> a.age-b.age)
+					}
+				}
+			})
+			
+			var app = new Vue({
+				el:"#app",
+				computed:{
+					...mapgetter(['sortage'])
+				},
+				store:store
+			})
+		</script>
+	</body>
+</html>

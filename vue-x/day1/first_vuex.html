@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>vuex</title>
+		<script src="../vue/day1/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="vuex.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<button type="button" @click="add">add</button>
+			<p>money:{{money}}</p>
+		</div>
+		<script type="text/javascript">
+			
+			var mystore = new Vuex.Store({
+
+				state:{
+					money:1
+				},
+				mutations:{
+					addmoney(state){
+							state.money++;
+				}
+				}
+			}) 
+			
+			var myvue = new Vue({
+				el:"#app",
+				data:{},
+				computed:{
+					money(){
+						return this.$store.state.money;
+					}
+				},
+				methods:{
+					add:function(){
+						
+						this.$store.commit('addmoney');
+					}
+				},
+				store:mystore
+			})
+		</script>
+	</body>
+</html>
