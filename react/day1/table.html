@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>stu_table</title>
+		<script src="https://cdn.bootcss.com/react/15.4.2/react.min.js"></script>
+		<script src="https://cdn.bootcss.com/react/15.4.2/react-dom.min.js"></script>
+		<script src="https://cdn.bootcss.com/babel-standalone/6.22.1/babel.min.js"></script>
+		<style type="text/css">
+			.tab{
+				border-collapse: collapse;
+				border: 1px solid #0077AA;
+			}
+			.tab tr td{
+				border: 1px solid #0077AA;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<table border="" cellspacing="" cellpadding="">
+				<tr><th>Header</th></tr>
+				<tr><td>Data</td></tr>
+			</table>
+		</div>
+		<script type="text/babel">
+			window.onload=function(){
+				var stu = [
+					{id:1,name:"lili",classes:"art",age:"16",tel:"0202000"},
+					{id:2,name:"lili",classes:"art",age:"16",tel:"0202000"},
+					{id:3,name:"lili",classes:"art",age:"16",tel:"0202000"},
+					{id:4,name:"lili",classes:"art",age:"16",tel:"0202000"},
+					{id:5,name:"lili",classes:"art",age:"16",tel:"0202000"}
+				]
+				var MyElement =React.createClass({
+					render(){
+						console.log('stu',this.props)
+						return (
+							<div>
+								<h2>hello world</h2>
+								<table className="tab">
+									<tr><th>id</th><th>name</th><th>classes</th><th>age</th><th>tel</th></tr>
+									{
+										this.props.stuarr.map(item=>{
+											return(
+												<tr>
+													<td>{item.id}</td>
+													<td>{item.name}</td>
+													<td>{item.classes}</td>
+													<td>{item.age}</td>
+													<td>{item.tel}</td>
+												</tr>
+											)
+										})
+									}
+								</table>
+							</div>	
+						)
+					}
+				})
+				
+				
+				ReactDOM.render(
+					<MyElement stuarr={stu}></MyElement>,
+					document.getElementById("app")
+				)
+			}
+			
+		</script>
+	</body>
+</html>

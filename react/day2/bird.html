@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>travel</title>
+		<script src="https://cdn.bootcss.com/react/15.4.2/react.min.js"></script>
+		<script src="https://cdn.bootcss.com/react/15.4.2/react-dom.min.js"></script>
+		<script src="https://cdn.bootcss.com/babel-standalone/6.22.1/babel.min.js"></script>
+		<script src="https://cdn.bootcss.com/axios/0.19.2/axios.min.js"></script>
+		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.1.0/css/swiper.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.1.0/js/swiper.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.1.0/js/swiper.min.js"></script>
+		<style type="text/css">
+			*{margin: 0;padding: 0;}
+			ul,li{list-style: none;}
+			.icon-flex{display: flex;justify-content: space-around;color: #EAD1AF;padding: 20px 0;}
+			.icon-flex i{font-size: 2rem;}
+			.cen{text-align: center; font-size: 18px;color: #8A8A8A; border-bottom: 2px solid #E3E3E3;padding-bottom: 0.625rem;}
+			.layout{display: flex;width: 100%;}
+			.layout .imgsize {width: 40%; margin: 10px;}
+			.like li img{width: 100%;}
+			.layout .imgsize img{width: 9.375rem;}
+			.layout .text{margin-top: 10px;}
+			.layout .row{white-space: nowrap;font-size: 14px;}
+			.layout .mini_size{font-size: 0.75rem;margin-top: 10px;margin-bottom: 10px;}
+			.layout .money{margin-left: 1.25rem;}
+			.swiper-container .swiper-slide img{width: 100%;}
+			.activity{margin:1.875rem}
+			.like{display: flex;flex-flow: wrap row;}
+			.like li{width: 40%;margin: 10px 15px;}
+			.like_title h3{text-align: center;color: #8A8A8A;}
+			.like_title .text_title{font-size: 0.75rem;color: #000000;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;}
+			.like_title .text_country{font-size: 0.875rem;color: #777777;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;}
+			.like_title .text_time{font-size: 0.875rem;white-space: nowrap;}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			
+		</div>
+		<script type="text/babel">
+			//创建父组件
+			class Parent extends React.Component{
+				constructor(){
+					super();
+					this.state = {
+						loopimg:[],
+						result:[],
+						travel:[],
+						imgarr:[]
+					}
+				}
+				componentDidMount(){
+					//获取候鸟的首页数据 get
+					axios.get("http://www.51houniao.com/product/product/guessYouLike").then((res)=>{
+						this.setState({
+							result:res.data
+						})
+					})
+					//获取轮播图数据
+					axios.get("http://www.51houniao.com/product/banner/getBySeller/4bc4027c645343f09a964b5c2e9f875b").then(res=>{
+						this.setState({
+							loopimg:res.data
+						})
+					})
+					//获取候鸟的首页数据 post
+					axios.post("http://www.51houniao.com/requirement/request/getMatchedProducts",{
+						desc: false,
+						orderBy: "outtime",
+						pageSize: 100,
+						product_type: 2
+					}).then((res)=>{
+						this.setState({
+							imgarr:res.data.matchedProducts
+						})
+					})
+					//获取推荐的数据
+					axios.post("http://www.51houniao.com/product/product/getProductRecommendUser",{
+						pageNow: 1,
+						pageSize: 20,
+						orderBy: "top",
+						desc: false
+					}).then(res=>{
+						this.setState({
+							travel:res.data
+						})
+					})
+				}
+				//如果数据在页面卸载前还没有加载完成，需要终止
+				componentWillUnmount(){
+					//this.re.abort();//jquery  
+				}
+				
+				render(){
+					const travel = this.state.travel;
+					const loopimg = this.state.loopimg;
+					const imgarr =this.state.imgarr;
+					const result =this.state.result;
+					console.log(result)
+					return (
+						<div>
+							<Loopimg img={loopimg}></Loopimg>
+							<div className="cen">推荐 <i className="el-icon-circle-check"></i></div>
+							<Recommend birdarr={travel}></Recommend>
+							<Travel img={imgarr}></Travel>
+							<Like arr={result}></Like>
+						</div>
+					)
+				}
+			}	
+			
+			//轮播图渲染
+			class Loopimg extends React.Component{
+				render(){
+					return(
+						<div>
+							<div className="swiper-container swiper-con1">
+							    <div className="swiper-wrapper">
+									{
+										this.props.img.map(item=>{
+											return(
+												<div className="swiper-slide">
+													<img src={item.photoUrl}/>
+												</div>
+											)
+										})
+									}
+							    </div>
+							    <div className="swiper-pagination sw1"></div>
+							</div>
+							<ul className="icon-flex">
+								<li>
+									<div><i className="el-icon-hot-water"></i></div>
+									<div>省心</div>
+								</li>
+								<li>
+									<div><i className="el-icon-grape"></i></div>
+									<div>品质</div>
+								</li>
+								<li>
+									<div><i className="el-icon-lollipop"></i></div>
+									<div>私密</div>
+								</li>
+								<li>
+									<div><i className="el-icon-medal"></i></div>
+									<div>专家</div>
+								</li>
+							</ul>
+						</div>
+					)
+				}
+			}
+			//推荐渲染
+			class Recommend extends React.Component{
+				render(){
+					return(
+						<ul>
+							{
+								this.props.birdarr.map(item=>{
+									return(
+										<li className="layout">
+											<div className="imgsize"><img src={item.proPicUrl} /></div>
+											<div className="text">
+												<p className="row">{item.proTitle}</p>
+												<p className="mini_size"><i className="el-icon-location"></i>{item.country}</p>
+												<p>
+												    <span><i className="el-icon-time"></i>{item.routingDat}天{item.routingNigth}晚</span>
+													<span className="money">{item.amount}元起</span>
+												</p>
+											</div>
+										</li>
+									)
+								})
+							}
+						</ul>	
+					)
+				}
+			} 
+			//风景轮播
+			class Travel extends React.Component{
+				render(){
+					return(
+						<div>
+							<div className="activity">
+								<h2>招募活动</h2>
+								<div>旅途中，邂逅TA，邂逅世界的美</div>
+							</div>
+							<div className="swiper-container swiper-con">
+							    <div className="swiper-wrapper">
+									{
+										this.props.img.map(item=>{
+											return(
+												<div className="swiper-slide">
+													<img src={item.pro_pic_url}/>
+												</div>
+											
+											)
+										})
+									}
+							    </div>
+							    <div className="swiper-pagination sw"></div>
+							</div>
+						</div>
+					)
+				}
+			}
+			class Like extends React.Component{
+				render(){
+					return(
+						<div className="like_title">
+							<h3>猜你喜欢<i className="el-icon-circle-check"></i></h3>
+							<ul className="like">
+								{
+									this.props.arr.map(i=>{
+										return(
+											<li>
+												<img src={i.proPicUrl}/>
+												<p className="text_title">{i.proTitle}</p>
+												<p className="text_country"><i className="el-icon-location"></i>{i.country}</p>
+												<p className="text_time"><span><i className="el-icon-time"></i>{i.routingDat}天{i.routingNigth}晚&nbsp;</span> <span>{i.amount}元起</span></p>
+											</li>
+										)
+									})
+								}
+							</ul>
+						</div>
+					)
+				}
+			}
+			ReactDOM.render(
+				<Parent></Parent>,
+				document.getElementById("app")
+			)
+		</script>
+		<script type="text/javascript">
+			window.onload=function(){
+				new Swiper ('.swiper-con', {
+					  observer:true,//修改swiper自己或子元素时，自动初始化swiper
+					 observeParents:true,//修改swiper的父元素时，自动初始化swiper
+				      loop: true,
+				      autoplay: 2000,
+				      // 如果需要分页器
+				      pagination:'.sw'
+					
+				    })   
+				new Swiper ('.swiper-con1', {
+						observer:true,//修改swiper自己或子元素时，自动初始化swiper
+						observeParents:true,//修改swiper的父元素时，自动初始化swiper
+					    loop: true,
+					    autoplay: 2000,
+					    // 如果需要分页器
+					    pagination:".sw1"
+					  })  
+			}
+		</script>
+	</body>
+</html>
